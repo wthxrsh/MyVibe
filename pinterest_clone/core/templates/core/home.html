@@ -1,0 +1,83 @@
+<!-- templates/core/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - Pinterest Clone</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-white shadow">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center">
+            <a href="{% url 'home' %}" class="text-xl font-bold text-gray-800"
+              >MyVibe</a
+            >
+          </div>
+          <div class="flex space-x-4">
+            {% if user.is_authenticated %}
+            <a
+              href="{% url 'profile' %}"
+              class="text-gray-600 hover:text-gray-800"
+              >Profile</a
+            >
+            <a
+              href="{% url 'logout' %}"
+              class="text-gray-600 hover:text-gray-800"
+              >Logout</a
+            >
+            {% else %}
+            <a
+              href="{% url 'login' %}"
+              class="text-gray-600 hover:text-gray-800"
+              >Login</a
+            >
+            <a
+              href="{% url 'register' %}"
+              class="text-gray-600 hover:text-gray-800"
+              >Register</a
+            >
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h1 class="text-3xl font-bold mb-6">Welcome to Pinterest Clone</h1>
+
+      {% if user.is_authenticated %}
+      <a
+        href="{% url 'create_board' %}"
+        class="bg-blue-500 text-white px-4 py-2 rounded-md mb-4"
+        >Add Board</a
+      >
+      {% endif %}
+
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      >
+        {% for pin in pins %}
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+          <img
+            src="{{ pin.image.url }}"
+            alt="{{ pin.title }}"
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-4">
+            <h3 class="text-lg font-semibold">{{ pin.title }}</h3>
+          </div>
+        </div>
+        {% empty %}
+        <p>No pins available.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>

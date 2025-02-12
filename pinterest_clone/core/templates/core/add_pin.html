@@ -1,0 +1,89 @@
+<!-- templates/core/add_pin.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Pin - Pinterest Clone</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-white shadow">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center">
+            <a href="{% url 'home' %}" class="text-xl font-bold text-gray-800"
+              >MyVibe</a
+            >
+          </div>
+          <div class="flex space-x-4">
+            {% if user.is_authenticated %}
+            <a
+              href="{% url 'profile' %}"
+              class="text-gray-600 hover:text-gray-800"
+              >Profile</a
+            >
+            <a
+              href="{% url 'logout' %}"
+              class="text-gray-600 hover:text-gray-800"
+              >Logout</a
+            >
+            {% else %}
+            <a
+              href="{% url 'login' %}"
+              class="text-gray-600 hover:text-gray-800"
+              >Login</a
+            >
+            <a
+              href="{% url 'register' %}"
+              class="text-gray-600 hover:text-gray-800"
+              >Register</a
+            >
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h1 class="text-3xl font-bold mb-6">Add a New Pin</h1>
+      <form
+        action="{% url 'create_pin' board.id %}"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <div class="mb-4">
+          <label for="title" class="block text-gray-700">Title</label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label for="image" class="block text-gray-700">Image</label>
+          <input
+            type="file"
+            name="image"
+            id="image"
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-500 text-white px-4 py-2 rounded-md"
+        >
+          Add Pin
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
