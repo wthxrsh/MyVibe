@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - Pinterest Clone</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-white shadow">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center">
+            <a href="{% url 'home' %}" class="text-xl font-bold text-red-600"
+              >MyVibe</a
+            >
+          </div>
+          <div class="flex space-x-4">
+            {% if user.is_authenticated %}
+            <a
+              href="{% url 'profile' %}"
+              class="text-gray-600 hover:text-red-600"
+              >Profile</a
+            >
+            <a
+              href="{% url 'logout' %}"
+              class="text-gray-600 hover:text-red-600"
+              >Logout</a
+            >
+            {% else %}
+            <a href="{% url 'login' %}" class="text-gray-600 hover:text-red-600"
+              >Login</a
+            >
+            <a
+              href="{% url 'register' %}"
+              class="text-gray-600 hover:text-red-600"
+              >Register</a
+            >
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h1 class="text-4xl font-bold mb-6 text-center">Profile</h1>
+      <p class="text-lg text-center">Welcome, {{ user.username }}!</p>
+
+      <h2 class="text-2xl font-semibold mb-4 text-center">My Boards</h2>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      >
+        {% for board in user.board_set.all %}
+        <div
+          class="bg-white shadow-md rounded-lg p-4 transition-transform transform hover:scale-105"
+        >
+          <h3 class="text-lg font-semibold">{{ board.name }}</h3>
+          <a
+            href="{% url 'board_detail' board.id %}"
+            class="text-red-600 hover:underline"
+            >View Board</a
+          >
+          <form
+            action="{% url 'delete_board' board.id %}"
+            method="post"
+            class="mt-2"
+          >
+            {% csrf_token %}
+            <button type="submit" class="text-red-500 hover:underline">
+              Delete Board
+            </button>
+          </form>
+        </div>
+        {% empty %}
+        <p>You have no boards.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>
